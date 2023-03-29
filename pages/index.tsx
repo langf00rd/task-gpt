@@ -22,14 +22,16 @@ export default function Home() {
       setResponse(response_.data)
       setLoading(false)
     }).catch(error => {
-      console.log('error', error)
       setLoading(false)
+      toast.error(error.message)
     })
   }
 
   const onCopy = () => {
     navigator.clipboard.writeText(response).then(() => {
       toast.success('Copied to clipboard! 🚀')
+    }).catch(error => {
+      toast.error('Could not copy to clipboard 🥲')
     })
   }
 
@@ -96,9 +98,9 @@ export default function Home() {
           </div>
           <button disabled={loading || description.trim().length <= 15} onClick={onGenerate} className="disabled:cursor-not-allowed disabled:opacity-60 bg-blue-600 p-2 px-5 rounded-md mt-5 active:scale-90 cursor-pointer transition-all">{loading ? 'Loading...' : 'Create'}</button>
           {response && <div className="border-t border-t-slate-700 mt-10 pt-10">
-            <p className="mb-2 text-2xl font-bold">Here you go...</p>
-            <textarea value={response} placeholder="Describe the issue, i'll do the rest..." className="w-full bg-transparent outline-none border-none h-[100px] -mt-10 resize-none"></textarea>
-            <div className="flex items-center gap-1 cursor-pointer" onClick={onCopy}>
+            <p className="text-2xl font-bold">Here you go...</p>
+            <p className="whitespace-break-spaces -mt-10">{response}</p>
+            <div className="bg-blue-600 p-2 px-5 flex items-center justify-center w-max gap-2 rounded-md mt-5 active:scale-90 cursor-pointer transition-all" onClick={onCopy}>
               <p>Copy</p>
               <BiCopy className="hover:opacity-75 transition-all cursor-pointer" />
             </div>

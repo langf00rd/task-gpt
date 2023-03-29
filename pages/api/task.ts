@@ -9,16 +9,20 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `produce a name and description for this ${req.body.platform} item: ${req.body.description}`,
+      temperature: 0.7,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    })
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `produce a name and description for this ${req.body.platform} item: ${req.body.description}`,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-  })
-
-  res.status(200).send(response.data.choices[0].text)
+    res.status(200).send(response.data.choices[0].text)
+  } catch (error) {
+    ///
+    throw error
+  }
 }
