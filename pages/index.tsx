@@ -1,24 +1,47 @@
+import axios from "axios";
 import Head from "next/head";
 import React from "react";
+import { toast, Toaster } from "react-hot-toast";
 import { BiCopy } from 'react-icons/bi'
 
 export default function Home() {
   const [description, setDescription] = React.useState<string>('')
   const [selectedPlatform, setSelectedPlatform] = React.useState<string>('other')
+  const [response, setResponse] = React.useState<string>('')
+  const [loading, setLoading] = React.useState<boolean>(false)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectPlatform = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event) return;
     setSelectedPlatform(event.target.value);
   }
 
+  const onGenerate = async () => {
+    setLoading(true)
+    await axios.post('/api/task', { description, 'platform': selectedPlatform }).then(response_ => {
+      console.log('response_', response_.data)
+      setResponse(response_.data)
+      setLoading(false)
+    }).catch(error => {
+      console.log('error', error)
+      setLoading(false)
+    })
+  }
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(response).then(() => {
+      toast.success('Copied to clipboard! 🚀')
+    })
+  }
+
   return (
     <div>
+      <Toaster />
       <Head>
         <title>TaskGPT - Create meaningful taks names. For all the lazy people</title>
         <meta name="description" content="Create meaningful taks names for Jira, ClickUp, Trello, etc, with the power of GPT-3" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="overflow-y-scroll p-10 h-screen bg-gradient-to-b from-gray-900 to-slate-800 flex flex-col text-white">
+      <main className="overflow-y-scroll p-5 h-screen bg-gradient-to-b from-gray-900 to-slate-800 flex flex-col text-white">
         <div className="w-full max-w-3xl mx-auto">
           <div>
             <h1 className="text-4xl mb-2 font-bold">TaskGPT</h1>
@@ -35,7 +58,7 @@ export default function Home() {
                   name="project-management"
                   value="trello"
                   checked={selectedPlatform === "trello"}
-                  onChange={handleChange}
+                  onChange={handleSelectPlatform}
                 />
                 <p>Trello</p>
               </label>
@@ -45,7 +68,7 @@ export default function Home() {
                   name="project-management"
                   value="jira"
                   checked={selectedPlatform === "jira"}
-                  onChange={handleChange}
+                  onChange={handleSelectPlatform}
                 />
                 <p>Jira</p>
               </label>
@@ -55,7 +78,7 @@ export default function Home() {
                   name="project-management"
                   value="clickup"
                   checked={selectedPlatform === "clickup"}
-                  onChange={handleChange}
+                  onChange={handleSelectPlatform}
                 />
                 <p>ClickUp</p>
               </label>
@@ -65,30 +88,21 @@ export default function Home() {
                   name="project-management"
                   value="other"
                   checked={selectedPlatform === "other"}
-                  onChange={handleChange}
+                  onChange={handleSelectPlatform}
                 />
                 <p>Other</p>
               </label>
             </div>
           </div>
-          <button disabled={description.trim().length <= 20} className="disabled:cursor-not-allowed disabled:opacity-60 bg-blue-600 p-2 px-5 rounded-md mt-5 active:scale-90 cursor-pointer transition-all">Create</button>
-          <div>
-            <p className="mt-12 mb-2 text-2xl font-bold">Here you go...</p>
-            <ul>
-              <li className="flex items-center justify-between gap-2 p-3 rounded-md border border-slate-700 bg-slate-800 mb-4">
-                <p>So im gonna do it for you with the power of GPT-3. God, youre so lazy smh</p>
-                <BiCopy className="hover:opacity-75 transition-all cursor-pointer" />
-              </li>
-              <li className="flex items-center justify-between gap-2 p-3 rounded-md border border-slate-700 bg-slate-800 mb-4">
-                <p>So im gonna do it for you with the power of GPT-3. God, youre so lazy smh</p>
-                <BiCopy className="hover:opacity-75 transition-all cursor-pointer" />
-              </li>
-              <li className="flex items-center justify-between gap-2 p-3 rounded-md border border-slate-700 bg-slate-800 mb-4">
-                <p>So im gonna do it for you with the power of GPT-3. God, youre so lazy smh</p>
-                <BiCopy className="hover:opacity-75 transition-all cursor-pointer" />
-              </li>
-            </ul>
-          </div>
+          <button disabled={loading || description.trim().length <= 15} onClick={onGenerate} className="disabled:cursor-not-allowed disabled:opacity-60 bg-blue-600 p-2 px-5 rounded-md mt-5 active:scale-90 cursor-pointer transition-all">{loading ? 'Loading...' : 'Create'}</button>
+          {response && <div className="border-t border-t-slate-700 mt-10 pt-10">
+            <p className="mb-2 text-2xl font-bold">Here you go...</p>
+            <textarea value={response} placeholder="Describe the issue, i'll do the rest..." className="w-full bg-transparent outline-none border-none h-[100px] -mt-10 resize-none"></textarea>
+            <div className="flex items-center gap-1 cursor-pointer" onClick={onCopy}>
+              <p>Copy</p>
+              <BiCopy className="hover:opacity-75 transition-all cursor-pointer" />
+            </div>
+          </div>}
         </div>
       </main>
     </div>
