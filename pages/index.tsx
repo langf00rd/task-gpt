@@ -1,5 +1,7 @@
 import axios from "axios";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { BiCopy } from 'react-icons/bi'
@@ -45,7 +47,12 @@ export default function Home() {
       <main className="overflow-y-scroll p-5 h-screen bg-gradient-to-b from-gray-900 to-slate-800 flex flex-col text-white">
         <div className="w-full max-w-3xl mx-auto py-14">
           <div>
-            <h1 className="text-4xl mb-2 font-bold">🔨🤖 TaskGPT</h1>
+            <div className="lg:flex items-center justify-between mb-5">
+              <h1 className="text-4xl mb-2 font-bold">🔨🤖 TaskGPT</h1>
+              <Link rel='noreferrer' href="https://www.producthunt.com/posts/taskgpt?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-taskgpt" target="_blank">
+                <Image className="w-[200px]" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=386484&theme=neutral" alt="TaskGPT - Create&#0032;tasks&#0047;issue&#0032;names&#0032;&#0038;&#0032;descriptions&#0032;for&#0032;Jira&#0044;&#0032;ClickUp&#0046;&#0046;&#0046; | Product Hunt" width="250" height="54" />
+              </Link>
+            </div>
             <p className="text-slate-500 lg:text-xl">Apparently you&apos;re too lazy to come up with better names & descriptions for issues/tasks on Jira, trello, ClickUp, etc. So i&apos;m gonna do it for you with the power of GPT-3. God, you&apos;re so lazy smh</p>
           </div>
           <textarea value={description} onChange={event => setDescription(event.target.value)} placeholder="Describe the issue, i'll do the rest..." className="placeholder:text-slate-600 mt-5 w-full p-3 bg-transparent outline-none border border-slate-700 h-[150px] resize-none"></textarea>
