@@ -50,7 +50,7 @@ export default function Home() {
             <p className="text-slate-500 lg:text-xl">Apparently you&apos;re too lazy to come up with better names & descriptions for issues/tasks on Jira, trello, ClickUp, etc. So i&apos;m gonna do it for you with the power of GPT-3. God, you&apos;re so lazy smh</p>
           </div>
           <textarea value={description} onChange={event => setDescription(event.target.value)} placeholder="Describe the issue, i'll do the rest..." className="placeholder:text-slate-600 mt-5 w-full p-3 bg-transparent outline-none border border-slate-700 h-[150px] resize-none"></textarea>
-          <p className="float-right text-slate-500">{description.trim().length} words</p>
+          <p className="float-right text-slate-500">{description.trim().length} characters</p>
           <div>
             <p className="mt-12 mb-2 text-2xl font-bold">Pick a platform</p>
             <div className='flex items-center gap-4'>
