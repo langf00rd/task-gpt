@@ -38,14 +38,14 @@ export default function Home() {
     <div>
       <Toaster />
       <Head>
-        <title>TaskGPT - Create meaningful taks names. For all the lazy people</title>
-        <meta name="description" content="Create meaningful taks names for Jira, ClickUp, Trello, etc, with the power of GPT-3" />
+        <title>TaskGPT - Create better tasks/issue names & descriptions</title>
+        <meta name="description" content="Create meaningful task/issue names & descriptions for Jira, ClickUp, Trello, etc, with the power of GPT-3" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="overflow-y-scroll p-5 h-screen bg-gradient-to-b from-gray-900 to-slate-800 flex flex-col text-white">
         <div className="w-full max-w-3xl mx-auto py-14">
           <div>
-            <h1 className="text-4xl mb-2 font-bold">🔨 TaskGPT</h1>
+            <h1 className="text-4xl mb-2 font-bold">🔨🤖 TaskGPT</h1>
             <p className="text-slate-500 lg:text-xl">Apparently you&apos;re too lazy to come up with better names & descriptions for issues/tasks on Jira, trello, ClickUp, etc. So i&apos;m gonna do it for you with the power of GPT-3. God, you&apos;re so lazy smh</p>
           </div>
           <textarea value={description} onChange={event => setDescription(event.target.value)} placeholder="Describe the issue, i'll do the rest..." className="placeholder:text-slate-600 mt-5 w-full p-3 bg-transparent outline-none border border-slate-700 h-[150px] resize-none"></textarea>
